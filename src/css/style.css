@@ -1,0 +1,41 @@
+* {
+    box-sizing: border-box;
+};
+
+.container {
+    
+   
+    
+}
+
+
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+   
+}
+
+.photo-card {
+width: calc((100% - 10px * 4) / 4)
+}
+
+
+.photo-card:not(:nth-child(4n+4)) {
+margin-right: 10px;
+}
+
+.foto {
+object-fit: cover;
+}
+.info {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+
+}
