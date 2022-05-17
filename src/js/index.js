@@ -1,28 +1,29 @@
+import ImagesApiService from "./api-servise";
+
 const refs = {
   form: document.querySelector("#search-form"),
   gallary: document.querySelector(".gallery"),
+  dtnLoadMore: document.querySelector('button[data-action="loadMore"]'),
 };
 
+const imagesApiService = new ImagesApiService();
+
 refs.form.addEventListener("submit", submitForm);
+refs.dtnLoadMore.addEventListener("click", loadMore);
 
 function submitForm(event) {
   event.preventDefault();
-  const {
-    elements: { searchQuery },
-  } = event.currentTarget;
-  fetchImeges(searchQuery.value);
+  imagesApiService.page += 1;
+  imagesApiService.query = event.currentTarget.elements.searchQuery.value;
+  imagesApiService.fetchImeges().then(marcupGallaryary).then(renderGallary);
 }
 
-function fetchImeges(name) {
-  const options = `key=27417964-9ff1189e4548517b9b88c7801&q=${name}&image_type=photo&orientation=horizontal&safesearch=true`;
-  fetch(`https://pixabay.com/api/?${options}`)
-    .then((response) => response.json())
-    .then(marcupGallaryary)
-    .then(renderGallary);
+function loadMore() {
+  imagesApiService.fetchImeges().then(marcupGallaryary).then(renderGallary);
 }
 
 function marcupGallaryary(images) {
-  console.log(images.hits);
+  refs.dtnLoadMore.classList.remove("hidden");
   return images.hits.map(colbackMap).join("");
 }
 
