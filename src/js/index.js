@@ -1,4 +1,5 @@
 import ImagesApiService from "./api-servise";
+import Notiflix from "notiflix";
 
 const refs = {
   form: document.querySelector("#search-form"),
@@ -13,9 +14,19 @@ refs.dtnLoadMore.addEventListener("click", loadMore);
 
 function submitForm(event) {
   event.preventDefault();
-  imagesApiService.page += 1;
+  imagesApiService.resetPage();
   imagesApiService.query = event.currentTarget.elements.searchQuery.value;
-  imagesApiService.fetchImeges().then(marcupGallaryary).then(renderGallary);
+  imagesApiService
+    .fetchImeges()
+    .then((data) => {
+      Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
+      return marcupGallaryary(data);
+    })
+    .then((markup) => {
+      resetMarkup();
+      return renderGallary(markup);
+    })
+    .catch();
 }
 
 function loadMore() {
@@ -23,6 +34,11 @@ function loadMore() {
 }
 
 function marcupGallaryary(images) {
+  console.log(images);
+  if (images.hits.length === 0) {
+    return Notiflix.Notify.warning("Memento te hominem esse");
+  }
+  console.log(images);
   refs.dtnLoadMore.classList.remove("hidden");
   return images.hits.map(colbackMap).join("");
 }
@@ -52,5 +68,10 @@ function colbackMap(element) {
 }
 
 function renderGallary(marcup) {
-  refs.gallary.innerHTML = marcup;
+  console.log(marcup);
+  refs.gallary.insertAdjacentHTML("beforeend", marcup);
+}
+
+function resetMarkup() {
+  refs.gallary.innerHTML = "";
 }

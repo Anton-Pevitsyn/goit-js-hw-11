@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/Anton-Pevitsyn/goit-js-hw-11",
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "notiflix": "^3.2.5"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.5"
